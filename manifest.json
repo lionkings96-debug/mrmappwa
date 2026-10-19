@@ -1,12 +1,17 @@
 {
-  "name": "MrMAP Personal Command Center",
+  "name": "MrMAP \u2014 Plan, Track, Achieve",
   "short_name": "MrMAP",
-  "description": "A private personal dashboard for fitness, tasks, schedule, notes and goals.",
+  "description": "Personal fitness, body measurements, weight tracking and special-day calendar.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#09090b",
-  "theme_color": "#0a0a0c",
+  "background_color": "#08090b",
+  "theme_color": "#09090b",
   "icons": [
-    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ]
 }
