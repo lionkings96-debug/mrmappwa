@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MrMAP">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <title>MrMAP — Personal Command Center</title>
+  <style>
+    :root{--bg:#09090b;--panel:#131316;--panel2:#19191d;--gold:#d6b56d;--gold2:#f1d99b;--text:#f4f1e9;--muted:#a5a19a;--line:#2b2925;--red:#d97777;--green:#8bc6a2}
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(ellipse at top,#1b1811 0,#09090b 42%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);min-height:100vh}
+    button,input,textarea,select{font:inherit} button{cursor:pointer}
+    .app{max-width:900px;margin:auto;padding:20px 16px 100px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 24px}
+    .brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border:1px solid var(--gold);border-radius:14px;display:grid;place-items:center;color:var(--gold2);font-weight:800;letter-spacing:-2px;font-size:19px;box-shadow:0 0 22px #d6b56d18}
+    h1{font-size:22px;margin:0;letter-spacing:1.7px} .subtitle{font-size:11px;letter-spacing:2px;color:var(--gold);margin-top:4px;text-transform:uppercase}
+    .iconbtn,.smallbtn{border:1px solid var(--line);background:#17171a;color:var(--gold2);border-radius:12px;padding:10px 12px}
+    .welcome{padding:24px;border:1px solid #4a3c21;border-radius:22px;background:linear-gradient(135deg,#1c1912,#121214 68%);margin-bottom:18px;position:relative;overflow:hidden}
+    .welcome:after{content:"";position:absolute;width:180px;height:180px;border:1px solid #d6b56d28;border-radius:50%;right:-65px;top:-75px;box-shadow:0 0 0 20px #d6b56d08,0 0 0 42px #d6b56d05}
+    .eyebrow{font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+    .welcome h2{font-size:28px;line-height:1.15;margin:10px 0 8px;max-width:520px}.welcome p{color:#c1bcb2;margin:0;max-width:500px;font-size:14px;line-height:1.5}
+    .hero-bottom{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .goldbtn{border:0;background:linear-gradient(120deg,#b99345,#f0d99b);color:#17130a;font-weight:750;border-radius:12px;padding:12px 15px}
+    .ghostbtn{border:1px solid #5d4b2a;background:#15130f;color:var(--gold2);border-radius:12px;padding:11px 14px}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{background:linear-gradient(145deg,#17171a,#111113);border:1px solid var(--line);border-radius:18px;padding:17px;min-width:0}
+    .card h3{margin:0 0 13px;font-size:15px;display:flex;align-items:center;justify-content:space-between;gap:8px}.tag{font-size:10px;letter-spacing:1px;color:var(--gold);text-transform:uppercase}
+    .metric{font-size:27px;font-weight:700;letter-spacing:-.5px}.metric small{font-size:12px;color:var(--muted);font-weight:500}.muted{color:var(--muted);font-size:12px}.progress{height:5px;background:#302d27;border-radius:99px;overflow:hidden;margin:12px 0 8px}.progress span{display:block;height:100%;background:linear-gradient(90deg,#ad8536,#f0d99b);border-radius:99px}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid #262528}.row:last-child{border-bottom:0}.rowtext{min-width:0;overflow-wrap:anywhere}.rowtext strong{display:block;font-size:13px;font-weight:600}.rowtext small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.check{accent-color:var(--gold);width:18px;height:18px;flex-shrink:0}.pill{border:1px solid #3b3323;border-radius:99px;padding:4px 8px;color:var(--gold2);font-size:10px;white-space:nowrap}
+    nav{position:fixed;z-index:5;bottom:0;left:0;right:0;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:#0d0d0ff2;border-top:1px solid #302b20;backdrop-filter:blur(20px);display:flex;justify-content:center}
+    .navinner{display:flex;max-width:700px;width:100%;justify-content:space-around;gap:4px}.navitem{flex:1;border:0;background:transparent;color:#8c8982;padding:8px 3px;border-radius:12px;font-size:10px}.navitem span{display:block;font-size:19px;margin-bottom:3px}.navitem.active{background:#292318;color:var(--gold2)}
+    .page{display:none}.page.active{display:block}.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:12px 0 15px}.sectionhead h2{font-size:23px;margin:0}.stack{display:grid;gap:12px}.form{display:grid;gap:10px}.formrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    label{display:block;color:var(--muted);font-size:11px;margin:2px 0 6px;letter-spacing:.4px}input,textarea,select{width:100%;border:1px solid #36343a;background:#0e0e11;color:var(--text);border-radius:11px;padding:12px;outline:none}input:focus,textarea:focus,select:focus{border-color:var(--gold)}textarea{min-height:100px;resize:vertical}
+    .item{background:#151518;border:1px solid #2c2a2d;border-radius:14px;padding:13px;display:flex;gap:10px;align-items:flex-start}.itemmain{flex:1;min-width:0}.itemmain strong{font-size:14px;display:block;overflow-wrap:anywhere}.itemmain p{font-size:12px;color:var(--muted);margin:6px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}.itemmeta{font-size:11px;color:var(--gold);margin-top:7px}.delete{background:transparent;border:0;color:#8b7777;font-size:18px;padding:0 4px}.empty{padding:20px;text-align:center;color:var(--muted);border:1px dashed #39363a;border-radius:14px;font-size:13px}
+    .notice{font-size:12px;color:#c5bca7;line-height:1.55;background:#19160f;border:1px solid #43351d;border-radius:12px;padding:12px}.toast{position:fixed;top:calc(12px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);background:#e7d39d;color:#17130a;padding:11px 16px;border-radius:99px;font-size:12px;font-weight:700;z-index:10;display:none;max-width:90%;text-align:center}
+    .goalhero{border:1px solid #5b4826;background:linear-gradient(130deg,#211b10,#141416);padding:20px;border-radius:18px}.goalhero h3{font-size:20px;margin:8px 0}.goalhero p{color:var(--muted);font-size:13px;line-height:1.5}
+    @media(min-width:650px){.app{padding:28px 24px 110px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.welcome h2{font-size:34px}.span2{grid-column:span 2}}
+    @media(max-width:380px){.app{padding-left:11px;padding-right:11px}.welcome{padding:19px}.welcome h2{font-size:25px}.card{padding:13px}.grid{gap:9px}.metric{font-size:23px}}
+  </style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+<div class="app">
+  <header>
+    <div class="brand"><div class="logo">MAP</div><div><h1>MrMAP</h1><div class="subtitle">Personal Command Center</div></div></div>
+    <button class="iconbtn" id="notifyBtn" aria-label="Enable notifications">♧</button>
+  </header>
+
+  <main>
+    <section class="page active" id="page-home">
+      <div class="welcome">
+        <div class="eyebrow" id="todayLabel">YOUR DAY • YOUR DIRECTION</div>
+        <h2>Think bigger.<br><span style="color:var(--gold2)">Build with purpose.</span></h2>
+        <p>Your private space to track your health, work, time and the long game. One focused day at a time.</p>
+        <div class="hero-bottom"><button class="goldbtn" onclick="showPage('tasks')">＋ Add a task</button><button class="ghostbtn" onclick="showPage('goals')">View my goals ↗</button></div>
+      </div>
+      <div class="grid">
+        <div class="card"><h3>Body weight <span class="tag">Fitness</span></h3><div class="metric" id="homeWeight">— <small>kg</small></div><div class="muted" id="weightSub">Log your first entry</div><div class="progress"><span id="weightProgress" style="width:0%"></span></div><button class="smallbtn" onclick="showPage('fitness')">Update weight</button></div>
+        <div class="card"><h3>Today's focus <span class="tag">Tasks</span></h3><div class="metric" id="taskCount">0 <small>open</small></div><div class="muted" id="taskSub">No tasks yet</div><div class="progress"><span id="taskProgress" style="width:0%"></span></div><button class="smallbtn" onclick="showPage('tasks')">Open tasks</button></div>
+        <div class="card"><h3>Long game <span class="tag">Goals</span></h3><div class="metric" id="goalCount">0 <small>goals</small></div><div class="muted">Keep your future visible</div><div class="progress"><span id="goalProgress" style="width:0%"></span></div><button class="smallbtn" onclick="showPage('goals')">View goals</button></div>
+        <div class="card span2"><h3>Today's agenda <span class="tag">Schedule</span></h3><div id="homeEvents"></div><button class="smallbtn" onclick="showPage('schedule')">Manage schedule</button></div>
+        <div class="card"><h3>Workout <span class="tag">Move</span></h3><div class="metric" id="workoutDone">0 <small>/ 0</small></div><div class="muted">Exercises checked today</div><div class="progress"><span id="workoutProgress" style="width:0%"></span></div><button class="smallbtn" onclick="showPage('fitness')">Workout plan</button></div>
+        <div class="card span2"><h3>Quick note <span class="tag">Capture</span></h3><textarea id="quickNote" placeholder="A thought worth keeping…"></textarea><div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="goldbtn" onclick="saveQuickNote()">Save note</button></div></div>
+      </div>
+    </section>
+
+    <section class="page" id="page-tasks">
+      <div class="sectionhead"><h2>Tasks & Reminders</h2><span class="tag">Execute</span></div>
+      <div class="card form" style="margin-bottom:14px">
+        <div><label for="taskTitle">Task name</label><input id="taskTitle" placeholder="e.g. Follow up with client"></div>
+        <div class="formrow"><div><label for="taskDate">Date</label><input id="taskDate" type="date"></div><div><label for="taskTime">Reminder time</label><input id="taskTime" type="time"></div></div>
+        <div><label for="taskPriority">Priority</label><select id="taskPriority"><option>Normal</option><option>High</option><option>Critical</option></select></div>
+        <button class="goldbtn" onclick="addTask()">＋ Add task</button>
+      </div>
+      <div class="stack" id="taskList"></div>
+    </section>
+
+    <section class="page" id="page-fitness">
+      <div class="sectionhead"><h2>Fitness & Routine</h2><span class="tag">Consistency</span></div>
+      <div class="grid" style="margin-bottom:14px">
+        <div class="card"><h3>Latest weight</h3><div class="metric" id="fitnessWeight">— <small>kg</small></div><div class="muted" id="weightDate">No entries</div></div>
+        <div class="card"><h3>Target weight</h3><div class="metric" id="targetWeightDisplay">— <small>kg</small></div><div class="muted">Your personal target</div></div>
+      </div>
+      <div class="card form" style="margin-bottom:14px">
+        <h3>Weight log</h3><div class="formrow"><div><label for="weightInput">Current weight (kg)</label><input id="weightInput" type="number" min="1" step=".1" placeholder="e.g. 78.5"></div><div><label for="targetWeight">Target weight (kg)</label><input id="targetWeight" type="number" min="1" step=".1" placeholder="e.g. 72"></div></div>
+        <button class="goldbtn" onclick="saveWeight()">Save weight</button>
+      </div>
+      <div class="card" style="margin-bottom:14px"><h3>Weight history</h3><div id="weightHistory"></div></div>
+      <div class="card form" style="margin-bottom:14px"><h3>Workout routine</h3><div><label for="exerciseName">Exercise</label><input id="exerciseName" placeholder="e.g. Push-ups — 3 × 12"></div><button class="goldbtn" onclick="addExercise()">＋ Add exercise</button><div id="exerciseList"></div><div class="notice">Workout checks reset each day. Add exercises that match your routine and mark them complete as you go.</div></div>
+    </section>
+
+    <section class="page" id="page-schedule">
+      <div class="sectionhead"><h2>Days & Meetings</h2><span class="tag">Be on time</span></div>
+      <div class="card form" style="margin-bottom:14px">
+        <div><label for="eventTitle">Event / meeting</label><input id="eventTitle" placeholder="e.g. Site meeting"></div>
+        <div><label for="eventDate">Date</label><input id="eventDate" type="date"></div>
+        <div class="formrow"><div><label for="eventTime">Time</label><input id="eventTime" type="time"></div><div><label for="eventPlace">Place / link</label><input id="eventPlace" placeholder="Optional"></div></div>
+        <div><label for="eventNotes">Notes</label><textarea id="eventNotes" placeholder="Agenda, people to call, what to bring…"></textarea></div>
+        <button class="goldbtn" onclick="addEvent()">＋ Add to schedule</button>
+      </div>
+      <div class="stack" id="eventList"></div>
+    </section>
+
+    <section class="page" id="page-notes">
+      <div class="sectionhead"><h2>Notes</h2><span class="tag">Capture ideas</span></div>
+      <div class="card form" style="margin-bottom:14px">
+        <div><label for="noteTitle">Title</label><input id="noteTitle" placeholder="Give this thought a name"></div>
+        <div><label for="noteBody">Note</label><textarea id="noteBody" placeholder="Ideas, decisions, lessons, plans…"></textarea></div>
+        <button class="goldbtn" onclick="addNote()">＋ Save note</button>
+      </div>
+      <div class="stack" id="noteList"></div>
+    </section>
+
+    <section class="page" id="page-goals">
+      <div class="sectionhead"><h2>Goals & Vision</h2><span class="tag">The long game</span></div>
+      <div class="goalhero" style="margin-bottom:14px"><div class="eyebrow">THE BIG DREAM</div><h3>Build wealth. Create value. Become a billionaire.</h3><p>Break the dream into measurable milestones. Track the work, review progress, and adjust your strategy. This is your vision board—not a guarantee.</p></div>
+      <div class="card form" style="margin-bottom:14px">
+        <div><label for="goalTitle">Goal / milestone</label><input id="goalTitle" placeholder="e.g. Build first investment portfolio"></div>
+        <div class="formrow"><div><label for="goalType">Timeframe</label><select id="goalType"><option>Yearly</option><option>Long-term</option><option>Monthly</option></select></div><div><label for="goalDate">Target date</label><input id="goalDate" type="date"></div></div>
+        <div><label for="goalDesc">Why it matters / next step</label><textarea id="goalDesc" placeholder="Define success and the next action…"></textarea></div>
+        <button class="goldbtn" onclick="addGoal()">＋ Add goal</button>
+      </div>
+      <div class="stack" id="goalList"></div>
+    </section>
+
+    <section class="page" id="page-settings">
+      <div class="sectionhead"><h2>Privacy & Settings</h2><span class="tag">Your device</span></div>
+      <div class="card stack">
+        <div><h3>Private by design</h3><p class="muted">MrMAP stores your entries in this browser on this iPhone. No account or cloud sync is used by this starter version.</p></div>
+        <div class="notice"><strong>Important:</strong> browser storage is not encrypted and can be cleared by iOS/Safari. This version does not include automatic backup. Export a copy regularly if you enter important information.</div>
+        <button class="ghostbtn" onclick="exportData()">Export my data (JSON)</button>
+        <button class="ghostbtn" onclick="importPicker()">Import backup (JSON)</button><input id="importFile" type="file" accept=".json,application/json" hidden>
+        <button class="ghostbtn" onclick="requestNotifications()">Enable notifications</button>
+        <div class="notice"><strong>Reminder limitation:</strong> on iPhone, a web app cannot reliably fire scheduled reminders while fully closed without web-push infrastructure. MrMAP can show due reminders while open. For dependable alerts, add key appointments to Apple Calendar or Reminders.</div>
+        <button class="ghostbtn" onclick="resetData()" style="border-color:#633737;color:#e9aaaa">Delete all MrMAP data on this device</button>
+        <div class="muted">Version 1.0 • Local-first PWA</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<nav><div class="navinner">
+  <button class="navitem active" data-page="home"><span>⌂</span>Home</button>
+  <button class="navitem" data-page="tasks"><span>✓</span>Tasks</button>
+  <button class="navitem" data-page="fitness"><span>↗</span>Fitness</button>
+  <button class="navitem" data-page="schedule"><span>▦</span>Schedule</button>
+  <button class="navitem" data-page="notes"><span>✎</span>Notes</button>
+  <button class="navitem" data-page="goals"><span>◎</span>Goals</button>
+</div></nav>
+
+<script>
+const $ = id => document.getElementById(id);
+const today = () => new Date().toISOString().slice(0,10);
+const dateLabel = d => d ? new Date(d+'T12:00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}) : '';
+const timeLabel = t => t ? new Date('2000-01-01T'+t).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'}) : '';
+const defaultData = () => ({tasks:[],weights:[],targetWeight:'',exercises:[],events:[],notes:[],goals:[],quickNote:'',doneWorkoutDate:''});
+let data;
+try { data = {...defaultData(), ...JSON.parse(localStorage.getItem('mrmappwa')||'{}')}; } catch { data=defaultData(); }
+function persist(){localStorage.setItem('mrmappwa',JSON.stringify(data));render();}
+function toast(msg){const t=$('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2600);}
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+name));document.querySelectorAll('.navitem').forEach(b=>b.classList.toggle('active',b.dataset.page===name));window.scrollTo({top:0,behavior:'smooth'});render();}
+document.querySelectorAll('.navitem').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+function addTask(){const title=$('taskTitle').value.trim();if(!title)return toast('Enter a task name first.');data.tasks.unshift({id:crypto.randomUUID(),title,date:$('taskDate').value||today(),time:$('taskTime').value,priority:$('taskPriority').value,done:false,alerted:false});$('taskTitle').value='';$('taskTime').value='';persist();toast('Task added.');}
+function toggleTask(id){const x=data.tasks.find(x=>x.id===id);if(x)x.done=!x.done;persist();}
+function del(kind,id){if(!confirm('Delete this item?'))return;data[kind]=data[kind].filter(x=>x.id!==id);persist();}
+function saveWeight(){const w=parseFloat($('weightInput').value),target=parseFloat($('targetWeight').value);if(w>0)data.weights.unshift({id:crypto.randomUUID(),weight:w,date:today()});if(target>0)data.targetWeight=target;if(!(w>0)&&!(target>0))return toast('Enter a weight or target.');$('weightInput').value='';persist();toast('Fitness details saved.');}
+function addExercise(){const name=$('exerciseName').value.trim();if(!name)return toast('Enter an exercise.');data.exercises.push({id:crypto.randomUUID(),name});$('exerciseName').value='';persist();}
+function toggleExercise(id){if(data.doneWorkoutDate!==today()){data.doneWorkoutDate=today();data.doneExercises=[];}data.doneExercises=data.doneExercises||[];data.doneExercises.includes(id)?data.doneExercises=data.doneExercises.filter(x=>x!==id):data.doneExercises.push(id);persist();}
+function addEvent(){const title=$('eventTitle').value.trim();if(!title)return toast('Enter an event name.');data.events.push({id:crypto.randomUUID(),title,date:$('eventDate').value||today(),time:$('eventTime').value,place:$('eventPlace').value.trim(),notes:$('eventNotes').value.trim()});['eventTitle','eventTime','eventPlace','eventNotes'].forEach(id=>$(id).value='');persist();toast('Added to schedule.');}
+function addNote(){const title=$('noteTitle').value.trim(),body=$('noteBody').value.trim();if(!title&&!body)return toast('Write a title or note.');data.notes.unshift({id:crypto.randomUUID(),title:title||'Untitled note',body,created:new Date().toISOString()});$('noteTitle').value='';$('noteBody').value='';persist();toast('Note saved.');}
+function saveQuickNote(){data.quickNote=$('quickNote').value;persist();toast('Quick note saved.');}
+function addGoal(){const title=$('goalTitle').value.trim();if(!title)return toast('Enter a goal.');data.goals.unshift({id:crypto.randomUUID(),title,type:$('goalType').value,date:$('goalDate').value,desc:$('goalDesc').value.trim(),progress:0,done:false});$('goalTitle').value='';$('goalDate').value='';$('goalDesc').value='';persist();toast('Goal added.');}
+function updateGoal(id,field,value){const g=data.goals.find(x=>x.id===id);if(g)g[field]=value;persist();}
+function requestNotifications(){if(!('Notification'in window)){toast('Notifications are not supported in this browser.');return;}Notification.requestPermission().then(p=>toast(p==='granted'?'Notifications enabled while MrMAP is open.':'Notification permission not granted.'));}
+$('notifyBtn').addEventListener('click',requestNotifications);
+function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='MrMAP-backup-'+today()+'.json';a.click();URL.revokeObjectURL(a.href);toast('Backup export started.');}
+function importPicker(){$('importFile').click();}
+$('importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!x||typeof x!=='object')throw Error();data={...defaultData(),...x};persist();toast('Backup imported.');}catch{toast('Could not read that backup file.');}e.target.value='';});
+function resetData(){if(!confirm('This permanently deletes all MrMAP data stored in this browser. Continue?'))return;localStorage.removeItem('mrmappwa');data=defaultData();persist();toast('MrMAP data deleted.');}
+function el(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!==undefined)e.innerHTML=html;return e;}
+function removeBtn(kind,id){const b=el('button','delete','×');b.title='Delete';b.onclick=()=>del(kind,id);return b;}
+function item(title,sub,meta,kind,id,body=''){const d=el('div','item');const main=el('div','itemmain');main.innerHTML='<strong></strong>'+(body?'<p></p>':'')+(meta?'<div class="itemmeta"></div>':'');main.querySelector('strong').textContent=title;if(body)main.querySelector('p').textContent=body;if(meta)main.querySelector('.itemmeta').textContent=meta+(sub?' • '+sub:'');else if(sub)main.innerHTML+='<div class="itemmeta"></div>',main.querySelector('.itemmeta').textContent=sub;d.append(main,removeBtn(kind,id));return d;}
+function render(){
+ $('todayLabel').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'}).toUpperCase();
+ const latest=data.weights[0];$('homeWeight').innerHTML=(latest?latest.weight:'—')+' <small>kg</small>';$('fitnessWeight').innerHTML=(latest?latest.weight:'—')+' <small>kg</small>';$('weightDate').textContent=latest?dateLabel(latest.date):'No entries';$('targetWeightDisplay').innerHTML=(data.targetWeight||'—')+' <small>kg</small>';$('targetWeight').value=data.targetWeight||'';
+ $('weightSub').textContent=latest?'Last logged '+dateLabel(latest.date):'Log your first entry';let wp=latest&&data.targetWeight?Math.max(0,Math.min(100,100-Math.abs(latest.weight-data.targetWeight)/Math.max(latest.weight,data.targetWeight)*100)):0;$('weightProgress').style.width=wp+'%';
+ const open=data.tasks.filter(x=>!x.done);$('taskCount').innerHTML=open.length+' <small>open</small>';$('taskSub').textContent=data.tasks.length?`${data.tasks.length-open.length} completed of ${data.tasks.length}`:'No tasks yet';$('taskProgress').style.width=(data.tasks.length?(data.tasks.length-open.length)/data.tasks.length*100:0)+'%';
+ $('goalCount').innerHTML=data.goals.filter(g=>!g.done).length+' <small>active</small>';$('goalProgress').style.width=(data.goals.length?data.goals.filter(g=>g.done).length/data.goals.length*100:0)+'%';
+ const done=data.doneWorkoutDate===today()?(data.doneExercises||[]).length:0;$('workoutDone').innerHTML=done+' <small>/ '+data.exercises.length+'</small>';$('workoutProgress').style.width=(data.exercises.length?done/data.exercises.length*100:0)+'%';
+ $('quickNote').value=data.quickNote||'';
+ const todayEvents=data.events.filter(e=>e.date===today()).sort((a,b)=>(a.time||'').localeCompare(b.time||''));$('homeEvents').innerHTML='';if(!todayEvents.length)$('homeEvents').append(el('div','empty','Nothing scheduled for today.'));else todayEvents.slice(0,4).forEach(e=>$('homeEvents').append(item(e.title,e.place,e.time?timeLabel(e.time):'Today','events',e.id)));
+ $('taskList').innerHTML='';const tasks=[...data.tasks].sort((a,b)=>(a.done-b.done)||(a.date||'').localeCompare(b.date||'')||(a.time||'').localeCompare(b.time||''));if(!tasks.length)$('taskList').append(el('div','empty','Your task list is clear. Add one thing to move forward.'));tasks.forEach(t=>{const d=el('div','item');const cb=el('input','check');cb.type='checkbox';cb.checked=t.done;cb.onchange=()=>toggleTask(t.id);const m=el('div','itemmain');m.innerHTML='<strong></strong><div class="itemmeta"></div>';m.querySelector('strong').textContent=t.title;m.querySelector('.itemmeta').textContent=dateLabel(t.date)+(t.time?' • '+timeLabel(t.time):'')+' • '+t.priority;if(t.done)m.querySelector('strong').style.textDecoration='line-through';d.append(cb,m,removeBtn('tasks',t.id));$('taskList').append(d);});
+ $('weightHistory').innerHTML='';if(!data.weights.length)$('weightHistory').append(el('div','empty','Your weight history will appear here.'));data.weights.slice(0,10).forEach(w=>$('weightHistory').append(item(w.weight+' kg',dateLabel(w.date),'Weight log','weights',w.id)));
+ $('exerciseList').innerHTML='';if(!data.exercises.length)$('exerciseList').append(el('div','empty','Add your first exercise.'));data.exercises.forEach(x=>{const d=el('div','row');const cb=el('input','check');cb.type='checkbox';cb.checked=data.doneWorkoutDate===today()&&(data.doneExercises||[]).includes(x.id);cb.onchange=()=>toggleExercise(x.id);const t=el('div','rowtext');t.innerHTML='<strong></strong>';t.querySelector('strong').textContent=x.name;const b=el('button','delete','×');b.onclick=()=>del('exercises',x.id);d.append(cb,t,b);$('exerciseList').append(d);});
+ $('eventList').innerHTML='';const ev=[...data.events].sort((a,b)=>(a.date||'').localeCompare(b.date||'')||(a.time||'').localeCompare(b.time||''));if(!ev.length)$('eventList').append(el('div','empty','No events scheduled yet.'));ev.forEach(e=>$('eventList').append(item(e.title,e.place,dateLabel(e.date)+(e.time?' • '+timeLabel(e.time):''),'events',e.id,e.notes)));
+ $('noteList').innerHTML='';if(!data.notes.length)$('noteList').append(el('div','empty','Your saved thoughts will live here.'));data.notes.forEach(n=>$('noteList').append(item(n.title,new Date(n.created).toLocaleDateString(),'', 'notes',n.id,n.body)));
+ $('goalList').innerHTML='';if(!data.goals.length)$('goalList').append(el('div','empty','Start with one measurable milestone.'));data.goals.forEach(g=>{const d=el('div','item');const main=el('div','itemmain');main.innerHTML='<strong></strong><div class="itemmeta"></div><p></p><div class="progress"><span></span></div><div style="display:flex;gap:8px;align-items:center;margin-top:8px"><input type="range" min="0" max="100" step="5" style="padding:0;accent-color:var(--gold)"><small class="muted"></small><label style="margin:0;display:flex;gap:5px;align-items:center"><input type="checkbox" class="check">Done</label></div>';main.querySelector('strong').textContent=g.title;main.querySelector('.itemmeta').textContent=g.type+(g.date?' • Due '+dateLabel(g.date):'');main.querySelector('p').textContent=g.desc||'';main.querySelector('.progress span').style.width=(g.progress||0)+'%';const range=main.querySelector('input[type=range]');range.value=g.progress||0;main.querySelector('small').textContent=(g.progress||0)+'%';range.oninput=()=>{main.querySelector('small').textContent=range.value+'%';main.querySelector('.progress span').style.width=range.value+'%'};range.onchange=()=>updateGoal(g.id,'progress',Number(range.value));const cb=main.querySelector('input[type=checkbox]');cb.checked=!!g.done;cb.onchange=()=>updateGoal(g.id,'done',cb.checked);d.append(main,removeBtn('goals',g.id));$('goalList').append(d);});
+ // Keep date inputs usefully prefilled
+ ['taskDate','eventDate'].forEach(id=>{if(!$(id).value)$(id).value=today();});
+ checkDueReminders();
+}
+function checkDueReminders(){if(!('Notification'in window)||Notification.permission!=='granted')return;const now=new Date();data.tasks.forEach(t=>{if(t.done||t.alerted||!t.date||!t.time)return;const due=new Date(t.date+'T'+t.time);if(due<=now&&due>new Date(now.getTime()-5*60000)){try{new Notification('MrMAP reminder',{body:t.title,tag:t.id});t.alerted=true;localStorage.setItem('mrmappwa',JSON.stringify(data));}catch{}}});}
+setInterval(checkDueReminders,30000);
+if('serviceWorker'in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+render();
+</script>
+</body>
+</html>
