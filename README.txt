@@ -1,28 +1,31 @@
-MrMAP — Updated PWA
-===================
+MrMAP — Personal Dashboard Upgrade
+==================================
 
-Includes:
-- Home dashboard
-- Fitness area with weight logging and target weight
-- Weight progress graph and 7-day, 30-day, 3-month and 6-month views
-- Body measurements: chest, waist, hip, butt, left/right arm, left/right forearm, left/right thigh
-- Male outline illustration with measurement values displayed beside it
-- Calendar with birthdays, anniversaries, holidays, meetings and personal events
-- Notes, JSON backup export/import
-- Dark black-and-gold mobile layout
+Included features:
+- Existing black-and-gold PWA layout, fitness, weight graph and body measurements
+- Calendar and special-day events
+- Notes with category, search and pin/unpin
+- Reminders with date, time, repeat preference, and done/undo tracking
+- My Day daily journal with mood and notes
+- Insights with weight history and monthly counts
+- JSON backup and restore
 - Offline cache via service worker
 
-Publish on GitHub Pages:
-1. Back up any existing MrMAP data using the app's More > Export backup.
-2. Replace index.html, manifest.json, sw.js and README.txt in the repository with these versions.
-3. Add icon.svg from this folder.
-4. In GitHub, open Settings > Pages and ensure the main branch/root folder is published.
-5. On iPhone, open the published site in Safari and refresh. If the old version remains, close MrMAP, reopen it online, and refresh again; the service worker cache is now v2.
+IMPORTANT — CLOUD SYNC IS NOT ENABLED YET
+This package still stores data in localStorage on each browser/device. It does NOT yet synchronise between iPhone and Windows. Enabling secure cloud sync requires configuring a cloud project (for example Supabase), authentication, database tables and row-level security. No secrets or credentials are included in this package.
+
+IMPORTANT — REMINDERS
+Reminder entries are stored and displayed inside MrMAP. Browser background notifications are not implemented in this version, and repeat values are stored as preferences but do not automatically create new occurrences.
+
+Upgrade / publish on GitHub Pages:
+1. Export a JSON backup from your current MrMAP before replacing any files.
+2. Unzip this package and replace the repository's index.html, manifest.json, sw.js, README.txt and icon.svg with these files.
+3. Commit/publish to the same GitHub Pages repository and path as the existing app.
+4. Open the website online and refresh MrMAP. If an old cached screen persists, close it and reopen the site.
+5. Check your fitness and calendar records, then use Import backup only if needed. Do not import an older backup over newer data unless you intend to replace it.
 
 Data compatibility:
-The app continues using the localStorage key "mrmappwa". Existing weight entries may be retained. Because the old app used a different structure for some data, export a backup first and check entries after updating. The app does not sync data across devices.
+The app retains localStorage key "mrmappwa" and adds reminders and daily journal arrays. Existing local records should remain in that browser, but always export a backup before updating. iPhone and Windows browser storage remain separate until cloud sync is configured.
 
 Privacy:
-This PWA stores entries in local browser storage, not encrypted. Export backups regularly. Scheduled alerts are not included; calendar events are displayed in-app.
-ms.
-- This starter has not been audited for security or medically/financially validated.
+Data is stored locally in the browser and is not encrypted by this app. Export backups regularly and protect the devices you use.
